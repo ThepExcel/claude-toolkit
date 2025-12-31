@@ -120,8 +120,13 @@ When applying frameworks, structure outputs as:
 [What to do with this analysis]
 ```
 
-## Related Skills
+## Related Skills (Optional)
 
-- `business-model` - Business Model Canvas, Lean Canvas, Value Proposition Canvas
-- `problem-solving` - 5 Whys, Fishbone, Root Cause Analysis
-- `triz` - Systematic innovation and contradiction solving
+| When | Suggest |
+|------|---------|
+| Design/validate business model | `/business-model` - BMC, Lean Canvas, VPC |
+| Stuck, need structured thinking | `/problem-solving` - Polya, 5 Whys, Fishbone |
+| Trade-off / contradiction | `/triz` - systematic innovation |
+| Need creative ideas | `/creativity` - divergent thinking |
+
+**Note:** These skills are optional. Business-management works standalone for strategic analysis.

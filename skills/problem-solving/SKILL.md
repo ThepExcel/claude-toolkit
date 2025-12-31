@@ -121,11 +121,13 @@ When patterns suggest another skill would help, **suggest** (don't auto-invoke):
 
 | Pattern Detected | Skill | Suggestion Phrase |
 |-----------------|-------|-------------------|
-| "improve X but Y gets worse" / trade-off / technical constraint | `/triz` | "นี่ดูเหมือนปัญหา contradiction - ลอง /triz ไหม?" |
-| Stuck, no ideas, need alternatives, divergent thinking | `/creativity` | "ถ้าอยากได้ไอเดียหลายๆ แบบ ลอง /creativity ดู" |
-| Need current facts, unknowns, comparison, research | `/deep-research` | "ต้องหาข้อมูลก่อน - ให้ผม /deep-research ไหม?" |
-| Technical/engineering problem, design constraint | `/triz` | "ปัญหา engineering แบบนี้ TRIZ น่าจะช่วยได้" |
-| Innovation, cross-industry ideas, breakthrough needed | `/creativity` (Combinatorial Engine) | "ลองดูว่าวงการอื่นแก้ปัญหานี้ยังไง?" |
+| Trade-off / "improve X but Y worsens" | `/triz` | "นี่ดูเหมือน contradiction - ลอง /triz ไหม?" |
+| Need ideas, divergent thinking | `/creativity` | "ถ้าอยากได้ไอเดียหลายๆ แบบ ลอง /creativity ดู" |
+| Need current facts, research | `/deep-research` | "ต้องหาข้อมูลก่อน - ให้ผม /deep-research ไหม?" |
+| Business strategy, SWOT, competition | `/business-management` | "เรื่องกลยุทธ์ธุรกิจ ลอง /business-management" |
+| Startup, business model design | `/business-model` | "ออกแบบ business model ลอง /business-model" |
+
+**Note:** These skills are optional. If unavailable, continue with problem-solving frameworks above.
 
 ### Suggestion Protocol
 
