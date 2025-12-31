@@ -93,17 +93,27 @@ Once installed, just describe what you need:
 
 ## Skill Structure
 
+Each skill is just a folder with at least one file: `SKILL.md`
+
 ```
-claude-skills/
-├── README.md
-├── skill-name/
-│   ├── SKILL.md           # Main skill definition (required)
-│   ├── SOURCES.md         # Attribution & sources
-│   └── references/        # Supporting documents (optional)
-│       └── methodology.md
-└── another-skill/
-    └── ...
+my-skill/
+├── SKILL.md          # Main file (required)
+├── scripts/          # Executable code (optional)
+├── references/       # Reference docs (optional)
+└── assets/           # Templates, images (optional)
 ```
+
+### 3-Level Progressive Loading
+
+Skills use smart loading - Claude only loads what's needed:
+
+| Level | When Loaded | Token Cost | Content |
+|-------|-------------|------------|---------|
+| **1. Metadata** | Session start | ~100 tokens | `name` + `description` from YAML |
+| **2. Instructions** | Skill triggered | <5,000 tokens | SKILL.md body |
+| **3. Resources** | When needed | Unlimited | Files in `references/`, `scripts/` |
+
+This means you can have dozens of skills installed without performance impact!
 
 ---
 
