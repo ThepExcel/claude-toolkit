@@ -1,19 +1,38 @@
-# Claude Code Skills
+# Claude Skills Collection
 
-A collection of reusable skills for [Claude Code](https://claude.ai/claude-code).
+A collection of reusable skills for Claude Code and Claude.ai.
+
+**Learn more:** [Claude Skills คืออะไร? วิธีสร้างและใช้งาน](https://www.thepexcel.com/claude-skills/)
+
+---
 
 ## Installation
+
+### For Claude Code (CLI)
 
 ```bash
 # Clone this repo
 git clone https://github.com/ThepExcel/claude-skills.git
+cd claude-skills
 
 # Create symlinks to make skills globally available
 mkdir -p ~/.claude/skills
-for skill in claude-skills/*/; do
-    [[ -d "$skill" && ! "$skill" =~ ^\. ]] && ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename "$skill")
+for skill in */; do
+    [[ -d "$skill" && ! "$skill" == .* ]] && ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename "$skill")
 done
 ```
+
+After installation, Claude Code will automatically use these skills when relevant.
+
+### For Claude.ai (Web)
+
+1. Open any skill folder (e.g., `deep-research/`)
+2. Copy the contents of `SKILL.md`
+3. Paste into your **Project Instructions** in Claude.ai
+
+> **Tip:** You can combine multiple skills in one project by copying relevant sections.
+
+---
 
 ## Available Skills
 
@@ -47,28 +66,31 @@ Skills from external sources, included for convenience.
 | **pptx** | PowerPoint presentation creation and editing | [Anthropic Official](https://github.com/anthropics/skills) |
 | **pdf** | PDF text extraction and form filling | [Anthropic Official](https://github.com/anthropics/skills) |
 
-## Usage
+---
 
-Once installed, Claude Code will automatically use these skills when relevant to your task.
+## Usage Examples
 
-You can also invoke skills directly by describing what you need:
-- "Research the latest AI developments" → uses deep-research
-- "Help me think creatively about this problem" → uses creativity
-- "Explain how recursion works" → uses concept-explainer
-- "Analyze SWOT for my business" → uses business-management
-- "Create a Lean Canvas for my startup idea" → uses business-model
-- "Help me create a skill from my expertise" → uses skill-extractor
-- "Coach me on fixing this messy Excel data" → uses power-query-coach
-- "Create an image prompt for product photography" → uses ai-image-video-prompt
-- "Create a PowerPoint presentation" → uses pptx
+Once installed, just describe what you need:
 
-## Structure
+- "Research the latest AI developments" → uses **deep-research**
+- "Help me think creatively about this problem" → uses **creativity**
+- "Explain how recursion works" → uses **concept-explainer**
+- "Analyze SWOT for my business" → uses **business-management**
+- "Create a Lean Canvas for my startup idea" → uses **business-model**
+- "Help me create a skill from my expertise" → uses **skill-extractor**
+- "Coach me on fixing this messy Excel data" → uses **power-query-coach**
+- "Create an image prompt for product photography" → uses **ai-image-video-prompt**
+- "Create a PowerPoint presentation" → uses **pptx**
+
+---
+
+## Skill Structure
 
 ```
 claude-skills/
 ├── README.md
 ├── skill-name/
-│   ├── SKILL.md           # Main skill definition
+│   ├── SKILL.md           # Main skill definition (required)
 │   ├── SOURCES.md         # Attribution & sources
 │   └── references/        # Supporting documents (optional)
 │       └── methodology.md
@@ -76,15 +98,17 @@ claude-skills/
     └── ...
 ```
 
+---
+
 ## License
 
 - **Original skills (ThepExcel):** MIT License - Feel free to use and modify.
-- **Anthropic skills (docx, xlsx, pptx, pdf):** Proprietary - See LICENSE.txt in each skill folder.
+- **Anthropic skills (docx, xlsx, pptx, pdf):** See LICENSE.txt in each skill folder.
+
+---
 
 ## Author
 
-Created by [ThepExcel](https://www.thepexcel.com) (Sira Ekabut)
-
----
+Created by [Sira Ekabut](https://www.thepexcel.com) (ThepExcel)
 
 *Skills marked as "ThepExcel + Claude" were developed through human-AI collaboration using Claude Code.*
