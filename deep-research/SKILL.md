@@ -1,132 +1,105 @@
 ---
 name: deep-research
-description: Comprehensive web research with 8-phase Graph-of-Thoughts pipeline for fast-changing topics (AI, tech, tools, pricing, benchmarks). Use when user requests research, analysis, investigation, or comparison requiring current information. Features hypothesis testing, source triangulation, claim verification, Red Team challenge, and anti-hallucination protocols. Supports Quick/Standard/Deep/Exhaustive intensity tiers. **Creative Mode** enables cross-industry research using Combinatorial Creativity Engine for innovation and novel approaches.
+description: Web research with Graph-of-Thoughts for fast-changing topics. Use when user requests research, analysis, investigation, or comparison requiring current information. Features hypothesis testing, source triangulation, claim verification, Red Team, self-critique, and gap analysis. Supports Quick/Standard/Deep/Exhaustive tiers. Creative Mode for cross-industry innovation.
 ---
 
 # Deep Research
 
-Research engine with Graph-of-Thoughts for topics where training data is outdated.
+Enhanced research engine for topics where training data is outdated.
 
 ## Quick Start
 
 ### Standard Mode
-1. **CLASSIFY** → Type A/B/C/D
-2. **SCOPE** → Boundaries + success criteria
-3. **HYPOTHESIZE** → 3-5 testable hypotheses
-4. **PLAN** → Search queries + source strategy
-5. **RETRIEVE** → Parallel execution (ALL searches in ONE message)
-6. **TRIANGULATE** → Cross-verify, assign C1/C2/C3 claims
-7. **SYNTHESIZE** → Insights + SO WHAT/NOW WHAT
-8. **RED TEAM** → Counter-evidence (depth 3+)
-9. **PACKAGE** → Report with citations
+```
+CLASSIFY → SCOPE → HYPOTHESIZE → PLAN → [PLAN PREVIEW*] → RETRIEVE
+→ GAP ANALYSIS → TRIANGULATE → SYNTHESIZE → RED TEAM → SELF-CRITIQUE → PACKAGE
+```
+*Deep+ tier only
 
 ### Creative Mode
-1. **ABSTRACT** → Topic to core function
-2. **MAP** → 3-5 analogous domains
-3. **SEARCH** → Cross-industry parallel
-4. **GENERALIZE** → Transferable principles
-5. **SYNTHESIZE** → Apply to original topic
+```
+ABSTRACT → MAP (3-5 domains) → SEARCH → GENERALIZE → SYNTHESIZE
+```
+**Trigger:** "creative mode", "cross-industry", "what do others do"
 
-**Trigger:** "creative mode", "cross-industry", "what do others do", innovation needed
+## Classification
 
-## Phase 0: Fast-Path Routing
-
-| Type | Characteristics | Process |
-|------|-----------------|---------|
-| A (LOOKUP) | Single fact | WebSearch → Answer |
-| B (SYNTHESIS) | Multi-fact aggregation | 3 phases |
-| C (ANALYSIS) | Judgment needed | 6 phases |
-| D (INVESTIGATION) | Novel/conflicting | Full 8 phases + Red Team |
-
-**Classify BEFORE proceeding.**
+| Type | When | Process |
+|------|------|---------|
+| A | Single fact | WebSearch → Answer |
+| B | Multi-fact | 3 phases |
+| C | Judgment needed | 6 phases |
+| D | Novel/conflicting | Full + Red Team |
 
 ## Intensity Tiers
 
 | Tier | Sources | When |
 |------|---------|------|
-| Quick | 5-10 | Known answer, single source |
-| Standard | 10-20 | Multi-faceted, moderate |
+| Quick | 5-10 | Simple question |
+| Standard | 10-20 | Multi-faceted |
 | Deep | 20-30 | Novel, high stakes |
 | Exhaustive | 30+ | Critical decision |
-| Creative | 15-25 | Cross-industry innovation |
 
-## Parallel Search (MANDATORY)
+## Core Rules
 
-**WRONG:** `WebSearch #1 → wait → WebSearch #2 → wait`
-
-**CORRECT (single message):**
+### Parallel Search (MANDATORY)
 ```
-WebSearch: "AI coding tools December 2025"
-WebSearch: "Claude Code vs Cursor comparison"
-WebSearch: "[topic] limitations challenges"
-Task(agent): Academic paper analysis
+[Single message]
+WebSearch: "[topic] 2025"
+WebSearch: "[topic] limitations"
+WebSearch: "[topic] vs alternatives"
 ```
 
-## Claim Types
+### Claim Types
 
 | Type | Requirements |
 |------|--------------|
-| **C1 Critical** | Quote + citation + 2+ independent sources + confidence |
-| **C2 Supporting** | Citation required |
-| **C3 Context** | Cite if contested |
+| **C1** | Quote + 2+ sources + confidence + reasoning |
+| **C2** | Citation required |
+| **C3** | Cite if contested |
 
-**Independence Rule:** 5 articles citing same report = ONE source.
+### Confidence Format (C1 claims)
+```
+**Claim:** [Statement]
+**Confidence:** HIGH/MEDIUM/LOW
+**Reason:** [Why]
+**Sources:** [1][2]
+```
 
-## Confidence Levels
-
-| Level | Criteria |
-|-------|----------|
-| HIGH (90%+) | 3+ A/B sources, n>1000, replicated |
-| MEDIUM (60-90%) | Single strong OR multiple weaker |
-| LOW (30-60%) | Preliminary, expert opinion |
-| SPECULATIVE (<30%) | Single weak, theoretical |
-
-## Anti-Hallucination
-
-- Every C1 MUST cite [N] immediately
-- Use "According to [1]..." format
-- Never "research suggests..." without citation
+### Anti-Hallucination
+- Every C1 cites [N] immediately
+- Use "According to [1]..."
 - Admit: "No sources found for X"
 
-## Quality Gates
+## URL Fallback
 
-| Gate | Requirement |
-|------|-------------|
-| Source count | Per intensity tier |
-| Independence | C1 claims in 2+ independent sources |
-| Recency | < 3 months for AI/tech |
-| Citation coverage | Every C1 has [N] + confidence |
-| Implications | Every finding has SO WHAT/NOW WHAT |
+If WebFetch returns 403:
+```bash
+curl -s --max-time 60 "https://r.jina.ai/https://example.com"
+```
 
-## Termination
+## Finding Details in References
 
-Stop when **any 2** are true:
-1. Each subquestion meets source minimums
-2. Last 5 queries yield <10% new info
-3. All C1 claims meet independence rule
-4. Budget caps hit
+| Topic | File | Grep Pattern |
+|-------|------|--------------|
+| Phase details | [standard-mode.md](./references/standard-mode.md) | `grep -n "^## Phase"` |
+| Creative mode | [creative-mode.md](./references/creative-mode.md) | `grep -n "^## Phase C"` |
+| Agent prompts | [agent-templates.md](./references/agent-templates.md) | `grep -n "^## "` |
+| Progress/recovery | [progress-recovery.md](./references/progress-recovery.md) | — |
+| Report template | [report_template.md](./assets/report_template.md) | — |
 
-## Autonomy
+## Scripts
 
-**Default: Proceed autonomously.** Only ask if query is incomprehensible or contradictory.
+| Script | Purpose |
+|--------|---------|
+| `scripts/source_evaluator.py` | Credibility scoring (0-100) |
+| `scripts/validate_report.py` | 9-check quality validation |
 
-## Resources
+## Related Skills
 
-| Resource | Purpose |
-|----------|---------|
-| [methodology.md](./references/methodology.md) | Full 8-phase details, Creative Mode, agent templates |
-| [report_template.md](./assets/report_template.md) | Thai report structure + output format |
-| `source_evaluator.py` | Credibility scoring (0-100) |
-| `validate_report.py` | 9-check quality validation |
-
-## Related Skills (Optional)
-
-| When | Suggest |
-|------|---------|
-| Cross-industry innovation | `/generate-creative-ideas` - Combinatorial Engine |
-| Technical contradiction found | `/triz` - systematic innovation |
-| Need to explain findings | `/explain-concepts` - teach concepts |
-| Strategic analysis needed | `/manage-business-strategy` - SWOT, Porter's |
-| Business model research | `/design-business-model` - BMC, Lean Canvas |
-
-**Note:** These skills are optional. Deep-research works standalone for fact-finding.
+| When | Skill |
+|------|-------|
+| Cross-industry innovation | `/generate-creative-ideas` |
+| Technical contradiction | `/triz` |
+| Explain findings | `/explain-concepts` |
+| Strategic analysis | `/manage-business-strategy` |
