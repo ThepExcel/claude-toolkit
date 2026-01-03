@@ -10,6 +10,37 @@ A collection of reusable skills for Claude Code and Claude.ai.
 
 ### For Claude Code (CLI)
 
+#### Method 1: Plugin Marketplace (Recommended)
+
+The easiest way to install skills. Add this marketplace once, then install any skill you want:
+
+```bash
+# Step 1: Add the marketplace
+/plugin marketplace add ThepExcel/claude-skills
+
+# Step 2: Install the skills you want
+/plugin install deep-research@thepexcel-skills
+/plugin install triz@thepexcel-skills
+/plugin install problem-solving@thepexcel-skills
+```
+
+**List all available skills:**
+```bash
+/plugin list thepexcel-skills
+```
+
+#### Method 2: Install Single Plugin from GitHub
+
+Install a specific skill directly without adding the marketplace:
+
+```bash
+/plugin add ThepExcel/claude-skills/deep-research
+```
+
+#### Method 3: Manual Clone + Symlink
+
+For full control or offline access:
+
 ```bash
 # Clone this repo
 git clone https://github.com/ThepExcel/claude-skills.git
@@ -57,6 +88,7 @@ Skills developed by [ThepExcel](https://www.thepexcel.com) in collaboration with
 | [**generate-creative-ideas**](generate-creative-ideas/) | Creative thinking techniques and ideation frameworks |
 | [**manage-business-strategy**](manage-business-strategy/) | Business management frameworks hub (SWOT, OKR, Porter's, BCG, etc.) |
 | [**power-query-coaching**](power-query-coaching/) | Coach users to transform messy data using Power Query UI |
+| [**optimize-prompt**](optimize-prompt/) | Prompt optimization consultant for Claude API, OpenAI, Gemini, CLAUDE.md, ChatGPT, n8n |
 | [**problem-solving**](problem-solving/) | Structured problem-solving methodologies (5 Whys, Fishbone, Root Cause Analysis) |
 | [**prompt-ai-image-video**](prompt-ai-image-video/) | Professional AI image/video prompt engineering with visual artist's eye |
 | [**skill-creator**](skill-creator/) | Guide for creating new Claude Code skills |
@@ -91,6 +123,7 @@ Once installed, invoke skills directly with `/skill-name` for guaranteed activat
 | `/extract-expertise` | Transform domain expertise into Claude skills |
 | `/generate-creative-ideas` | Creative thinking and ideation techniques |
 | `/manage-business-strategy` | SWOT, OKR, Porter's Five Forces, BCG Matrix |
+| `/optimize-prompt` | Improve system prompts for any AI platform |
 | `/power-query-coaching` | Step-by-step Power Query UI guidance |
 | `/problem-solving` | 5 Whys, Fishbone, Root Cause Analysis |
 | `/prompt-ai-image-video` | Professional AI image/video prompts |
