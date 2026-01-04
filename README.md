@@ -1,70 +1,91 @@
-# Claude Skills Collection
+> **Note:** This repository contains ThepExcel's collection of skills for Claude. For information about the Agent Skills standard, see [agentskills.io](http://agentskills.io).
 
-A collection of reusable skills for Claude Code and Claude.ai.
+# Skills
+
+Skills are folders of instructions, scripts, and resources that Claude loads dynamically to improve performance on specialized tasks. Skills teach Claude how to complete specific tasks in a repeatable way.
 
 **Learn more:** [Claude Skills คืออะไร? วิธีสร้างและใช้งาน](https://www.thepexcel.com/claude-skills/)
 
----
+For official documentation:
+- [What are skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
+- [Using skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
+- [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills)
 
-## Installation
+# About This Repository
 
-### For Claude Code (CLI)
+This repository contains skills developed by [ThepExcel](https://www.thepexcel.com) for productivity, research, problem-solving, and creative tasks. Each skill is self-contained in its own folder with a `SKILL.md` file.
 
-#### Method 1: Plugin Marketplace (Recommended)
+Skills are organized into bundles by domain:
 
-The easiest way to install skills. Add this marketplace once, then install any skill you want:
+| Bundle | Skills | Description |
+|--------|--------|-------------|
+| `excel-skills` | xlsx, power-query-coaching | Excel and Power Query |
+| `research-education-skills` | deep-research, explain-concepts | Research and learning |
+| `innovation-skills` | problem-solving, triz, generate-creative-ideas | Problem-solving and creativity |
+| `business-skills` | design-business-model, manage-business-strategy | Business frameworks |
+| `prompt-engineering` | optimize-prompt, prompt-ai-image-video | AI prompt optimization |
+| `skill-building` | skill-creator, extract-expertise | Create your own skills |
+| `visualization-skills` | create-visualization | Diagrams and animations |
+| `document-skills` | xlsx, docx, pptx, pdf | Office documents |
+
+> **Note:** `xlsx` appears in both `excel-skills` and `document-skills` - install whichever fits your needs.
+
+# Skill Sets
+
+- [./skills](./skills): All available skills
+- [./skills/xlsx](./skills/xlsx), [./skills/docx](./skills/docx), [./skills/pptx](./skills/pptx), [./skills/pdf](./skills/pdf): Document skills (from [Anthropic Official](https://github.com/anthropics/skills))
+
+# Try in Claude Code, Claude.ai, and the API
+
+## Claude Code
+
+Register this repository as a Claude Code Plugin marketplace:
 
 ```bash
-# Step 1: Add the marketplace
 /plugin marketplace add ThepExcel/claude-skills
+```
 
-# Step 2: Install the skills you want
+Then install skill bundles:
+
+```bash
 /plugin install excel-skills@thepexcel-skills -s project
 /plugin install innovation-skills@thepexcel-skills -s project
 /plugin install document-skills@thepexcel-skills -s project
 ```
 
-**Available skill bundles:**
-
-| Bundle | Skills Included |
-|--------|-----------------|
-| `excel-skills` | xlsx, power-query-coaching |
-| `research-education-skills` | deep-research, explain-concepts |
-| `innovation-skills` | problem-solving, triz, generate-creative-ideas |
-| `business-skills` | design-business-model, manage-business-strategy |
-| `prompt-engineering` | optimize-prompt, prompt-ai-image-video |
-| `skill-building` | skill-creator, extract-expertise |
-| `visualization-skills` | create-visualization |
-| `document-skills` | xlsx, docx, pptx, pdf |
-
-> **Note:** `xlsx` appears in both `excel-skills` and `document-skills` - install whichever fits your needs.
-
 **Installation scopes:**
 
-| Scope | Flag | Where | Use case |
-|-------|------|-------|----------|
-| `project` | `-s project` | Current project only | Recommended for most cases |
-| `user` | `-s user` (default) | All projects | Personal productivity skills |
+| Scope | Flag | Use case |
+|-------|------|----------|
+| `project` | `-s project` | Current project only (recommended) |
+| `user` | `-s user` | All projects |
 
-> **Note:** Plugin files are cached in `~/.claude/plugins/cache/`, not copied into your project. They work seamlessly but won't appear in your project folder.
+**Other commands:**
 
-**Other useful commands:**
 ```bash
-/plugin list thepexcel-skills              # List all available skills
-/plugin marketplace update thepexcel-skills # Update to latest version
+/plugin list thepexcel-skills              # List available skills
+/plugin marketplace update thepexcel-skills # Update to latest
 /plugin uninstall excel-skills@thepexcel-skills
 ```
 
-#### Method 2: Manual Clone + Symlink
+## Claude.ai
 
-For full control, offline access, or if you want files in your project:
+1. Download a skill folder from [./skills](./skills)
+2. ZIP the folder (must contain SKILL.md)
+3. Go to **Settings > Capabilities > Skills**
+4. Click **Upload skill** and select your ZIP file
+
+> **Requirements:** Pro, Max, Team, or Enterprise plan.
+
+## Manual Installation
+
+For offline access or full control:
 
 ```bash
-# Clone this repo
 git clone https://github.com/ThepExcel/claude-skills.git
 cd claude-skills
 
-# Create symlinks to make skills globally available
+# Symlink to ~/.claude/skills/
 mkdir -p ~/.claude/skills
 for skill in skills/*/; do
     skill_name=$(basename "$skill")
@@ -72,139 +93,36 @@ for skill in skills/*/; do
 done
 ```
 
-After installation, Claude Code will automatically use these skills when relevant.
+# Creating a Basic Skill
 
-### For Claude.ai (Web)
+Use the `skill-creator` skill or create manually:
 
-**Step 1: Download the skill folder**
+```markdown
+---
+name: my-skill-name
+description: A clear description of what this skill does and when to use it
+---
 
-Choose one of these methods:
+# My Skill Name
 
-| Method | How |
-|--------|-----|
-| **Download entire repo** | Click green **Code** button → **Download ZIP** → Extract → Find the skill folder in `skills/` |
-| **Use download tool** | Go to [download-directory.github.io](https://download-directory.github.io/) → Paste folder URL (e.g., `https://github.com/ThepExcel/claude-skills/tree/main/skills/deep-research`) |
-| **Git clone** | `git clone https://github.com/ThepExcel/claude-skills.git` → Copy the folder from `skills/` |
+[Instructions that Claude will follow]
 
-**Step 2: ZIP the folder**
+## Examples
+- Example usage 1
+- Example usage 2
 
-```bash
-# ZIP the skill folder (must contain SKILL.md)
-cd skills
-zip -r deep-research.zip deep-research/
+## Guidelines
+- Guideline 1
+- Guideline 2
 ```
 
-**Step 3: Upload to Claude.ai**
+# License
 
-1. Go to **Settings > Capabilities**
-2. Scroll down to **Skills** section
-3. Click **Upload skill** and select your ZIP file
+- **Original skills (ThepExcel):** MIT License
+- **Document skills (docx, xlsx, pptx, pdf):** See LICENSE.txt in each folder ([Anthropic Official](https://github.com/anthropics/skills))
 
-> **Important:** ZIP must contain the folder with SKILL.md inside!
->
-> **Requirements:** Pro, Max, Team, or Enterprise plan.
-
----
-
-## Available Skills
-
-### Original Skills (by ThepExcel + Claude)
-
-Skills developed by [ThepExcel](https://www.thepexcel.com) in collaboration with Claude.
-
-| Skill | Description |
-|-------|-------------|
-| [**create-visualization**](skills/create-visualization/) | Data visualization, diagrams, and Manim animations |
-| [**deep-research**](skills/deep-research/) | Comprehensive 8-phase research with Graph-of-Thoughts, source triangulation, and claim verification |
-| [**design-business-model**](skills/design-business-model/) | Business Model Canvas, Lean Canvas, Value Proposition Canvas |
-| [**explain-concepts**](skills/explain-concepts/) | Master teaching methodology for explaining concepts with visualizations |
-| [**extract-expertise**](skills/extract-expertise/) | Extract domain expertise from experts and transform into Claude skills |
-| [**generate-creative-ideas**](skills/generate-creative-ideas/) | Creative thinking techniques and ideation frameworks |
-| [**manage-business-strategy**](skills/manage-business-strategy/) | Business management frameworks hub (SWOT, OKR, Porter's, BCG, etc.) |
-| [**power-query-coaching**](skills/power-query-coaching/) | Coach users to transform messy data using Power Query UI |
-| [**optimize-prompt**](skills/optimize-prompt/) | Prompt optimization consultant for Claude API, OpenAI, Gemini, CLAUDE.md, ChatGPT, n8n |
-| [**problem-solving**](skills/problem-solving/) | Structured problem-solving methodologies (5 Whys, Fishbone, Root Cause Analysis) |
-| [**prompt-ai-image-video**](skills/prompt-ai-image-video/) | Professional AI image/video prompt engineering with visual artist's eye |
-| [**skill-creator**](skills/skill-creator/) | Guide for creating new Claude Code skills |
-| [**triz**](skills/triz/) | TRIZ (Theory of Inventive Problem Solving) with 40 principles and contradiction matrix |
-
-### Anthropic Official Skills (Pre-optimized)
-
-Skills from Anthropic's official repository. These follow Anthropic's best practices and are already optimized for token efficiency.
-
-| Skill | Description | Source |
-|-------|-------------|--------|
-| [**docx**](skills/docx/) | Word document creation, editing, and analysis | [Anthropic Official](https://github.com/anthropics/skills) |
-| [**pdf**](skills/pdf/) | PDF text extraction and form filling | [Anthropic Official](https://github.com/anthropics/skills) |
-| [**pptx**](skills/pptx/) | PowerPoint presentation creation and editing | [Anthropic Official](https://github.com/anthropics/skills) |
-| [**xlsx**](skills/xlsx/) | Excel spreadsheet creation with formulas and formatting | [Anthropic Official](https://github.com/anthropics/skills) + ThepExcel |
-
-> **Note:** xlsx enhanced by ThepExcel with Power Query routing to `/power-query-coaching`.
-
----
-
-## Usage Examples
-
-Once installed, invoke skills directly with `/skill-name` for guaranteed activation:
-
-| Command | What It Does |
-|---------|--------------|
-| `/create-visualization` | Data visualization, diagrams, Manim animations |
-| `/deep-research` | Comprehensive 8-phase research with source verification |
-| `/design-business-model` | Business Model Canvas, Lean Canvas |
-| `/docx` `/pdf` `/pptx` `/xlsx` | Office document operations |
-| `/explain-concepts` | Master teaching methodology with visualizations |
-| `/extract-expertise` | Transform domain expertise into Claude skills |
-| `/generate-creative-ideas` | Creative thinking and ideation techniques |
-| `/manage-business-strategy` | SWOT, OKR, Porter's Five Forces, BCG Matrix |
-| `/optimize-prompt` | Improve system prompts for any AI platform |
-| `/power-query-coaching` | Step-by-step Power Query UI guidance |
-| `/problem-solving` | 5 Whys, Fishbone, Root Cause Analysis |
-| `/prompt-ai-image-video` | Professional AI image/video prompts |
-| `/skill-creator` | Guide for creating new skills |
-| `/triz` | 40 TRIZ principles and contradiction matrix |
-
----
-
-## Repository Structure
-
-```
-claude-skills/
-├── .claude-plugin/
-│   └── marketplace.json   # Marketplace configuration
-├── skills/
-│   ├── deep-research/
-│   │   ├── SKILL.md       # Skill instructions (required)
-│   │   ├── references/    # Reference docs (optional)
-│   │   └── assets/        # Templates, images (optional)
-│   ├── xlsx/
-│   └── ...
-└── README.md
-```
-
-### 3-Level Progressive Loading
-
-Skills use smart loading - Claude only loads what's needed:
-
-| Level | When Loaded | Token Cost | Content |
-|-------|-------------|------------|---------|
-| **1. Metadata** | Session start | ~100 tokens | `name` + `description` from YAML |
-| **2. Instructions** | Skill triggered | <5,000 tokens | SKILL.md body |
-| **3. Resources** | When needed | Unlimited | Files in `references/`, `scripts/` |
-
-This means you can have dozens of skills installed without performance impact!
-
----
-
-## License
-
-- **Original skills (ThepExcel):** MIT License - Feel free to use and modify.
-- **Anthropic skills (docx, xlsx, pptx, pdf):** See LICENSE.txt in each skill folder.
-
----
-
-## Author
+# Author
 
 Created by [Sira Ekabut](https://www.thepexcel.com) (ThepExcel)
 
-*Skills marked as "ThepExcel + Claude" were developed through human-AI collaboration using Claude Code.*
+*Skills developed through human-AI collaboration using Claude Code.*
