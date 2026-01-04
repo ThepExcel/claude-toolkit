@@ -19,14 +19,25 @@ The easiest way to install skills. Add this marketplace once, then install any s
 /plugin marketplace add ThepExcel/claude-skills
 
 # Step 2: Install the skills you want
-/plugin install deep-research@thepexcel-skills
-/plugin install triz@thepexcel-skills
-/plugin install problem-solving@thepexcel-skills
+/plugin install deep-research@thepexcel-skills -s project
+/plugin install triz@thepexcel-skills -s project
+/plugin install xlsx@thepexcel-skills -s project
 ```
 
-**List all available skills:**
+**Installation scopes:**
+
+| Scope | Flag | Where | Use case |
+|-------|------|-------|----------|
+| `project` | `-s project` | Current project only | Recommended for most cases |
+| `user` | `-s user` (default) | All projects | Personal productivity skills |
+
+> **Note:** Plugin files are cached in `~/.claude/plugins/cache/`, not copied into your project. They work seamlessly but won't appear in your project folder.
+
+**Other useful commands:**
 ```bash
-/plugin list thepexcel-skills
+/plugin list thepexcel-skills              # List all available skills
+/plugin marketplace update thepexcel-skills # Update to latest version
+/plugin uninstall deep-research@thepexcel-skills
 ```
 
 #### Method 2: Install Single Plugin from GitHub
@@ -34,12 +45,12 @@ The easiest way to install skills. Add this marketplace once, then install any s
 Install a specific skill directly without adding the marketplace:
 
 ```bash
-/plugin add ThepExcel/claude-skills/plugins/deep-research
+/plugin add ThepExcel/claude-skills/plugins/deep-research -s project
 ```
 
 #### Method 3: Manual Clone + Symlink
 
-For full control or offline access:
+For full control, offline access, or if you want files in your project:
 
 ```bash
 # Clone this repo
@@ -48,8 +59,9 @@ cd claude-skills
 
 # Create symlinks to make skills globally available
 mkdir -p ~/.claude/skills
-for skill in plugins/*/; do
-    ln -s "$(pwd)/$skill" ~/.claude/skills/$(basename "$skill")
+for skill in plugins/*/skills/*/; do
+    skill_name=$(basename "$skill")
+    ln -sf "$(pwd)/$skill" ~/.claude/skills/$skill_name
 done
 ```
 
@@ -63,15 +75,16 @@ Choose one of these methods:
 
 | Method | How |
 |--------|-----|
-| **Download entire repo** | Click green **Code** button → **Download ZIP** → Extract → Find the skill folder in `plugins/` |
-| **Use download tool** | Go to [download-directory.github.io](https://download-directory.github.io/) → Paste folder URL (e.g., `https://github.com/ThepExcel/claude-skills/tree/main/plugins/deep-research`) |
-| **Git clone** | `git clone https://github.com/ThepExcel/claude-skills.git` → Copy the folder from `plugins/` |
+| **Download entire repo** | Click green **Code** button → **Download ZIP** → Extract → Find the skill folder in `plugins/*/skills/` |
+| **Use download tool** | Go to [download-directory.github.io](https://download-directory.github.io/) → Paste folder URL (e.g., `https://github.com/ThepExcel/claude-skills/tree/main/plugins/deep-research/skills/deep-research`) |
+| **Git clone** | `git clone https://github.com/ThepExcel/claude-skills.git` → Copy the folder from `plugins/*/skills/` |
 
 **Step 2: ZIP the folder**
 
 ```bash
-# ZIP the entire folder (not just the files inside!)
-zip -r deep-research.zip plugins/deep-research/
+# ZIP the skill folder (must contain SKILL.md)
+cd plugins/deep-research/skills
+zip -r deep-research.zip deep-research/
 ```
 
 **Step 3: Upload to Claude.ai**
@@ -80,7 +93,7 @@ zip -r deep-research.zip plugins/deep-research/
 2. Scroll down to **Skills** section
 3. Click **Upload skill** and select your ZIP file
 
-> **Important:** ZIP must contain the folder structure. If you ZIP only the files, Claude won't find SKILL.md!
+> **Important:** ZIP must contain the folder with SKILL.md inside!
 >
 > **Requirements:** Pro, Max, Team, or Enterprise plan.
 
@@ -146,16 +159,20 @@ Once installed, invoke skills directly with `/skill-name` for guaranteed activat
 
 ---
 
-## Skill Structure
+## Plugin Structure
 
-Each skill is just a folder with at least one file: `SKILL.md`
+Each plugin contains skills in the `skills/` directory:
 
 ```
-plugins/my-skill/
-├── SKILL.md          # Main file (required)
-├── scripts/          # Executable code (optional)
-├── references/       # Reference docs (optional)
-└── assets/           # Templates, images (optional)
+plugins/my-plugin/
+├── .claude-plugin/
+│   └── plugin.json       # Plugin metadata (required)
+├── skills/
+│   └── my-skill/
+│       ├── SKILL.md      # Skill instructions (required)
+│       ├── references/   # Reference docs (optional)
+│       └── assets/       # Templates, images (optional)
+└── scripts/              # Executable code (optional)
 ```
 
 ### 3-Level Progressive Loading
