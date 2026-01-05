@@ -81,10 +81,11 @@
     },
     {
       "name": "document-skills",
-      "description": "Office document skills including Word, PowerPoint, and PDF capabilities",
+      "description": "Office document skills including Excel, Word, PowerPoint, and PDF capabilities",
       "source": "./bundles/document-skills",
       "strict": true,
       "skills": [
+        "./skills/xlsx",
         "./skills/docx",
         "./skills/pptx",
         "./skills/pdf"
