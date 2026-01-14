@@ -20,50 +20,16 @@ claude plugin install ThepExcel/thepexcel-claude-plugins
 
 This installs from the [thepexcel-claude-plugins](https://github.com/ThepExcel/thepexcel-claude-plugins) repo (auto-synced from this repo).
 
-### Method 2: Clone All Skills
+### Method 2: Manual Installation
 
-Clone this repo and symlink to make skills available:
-
-**User-level (all projects):**
-```bash
-git clone https://github.com/ThepExcel/agent-skills.git ~/agent-skills
-
-# Symlink individual skills
-ln -s ~/agent-skills/deep-research ~/.claude/skills/deep-research
-ln -s ~/agent-skills/triz ~/.claude/skills/triz
-# ... or symlink all
-for skill in ~/agent-skills/*/; do
-  ln -s "$skill" ~/.claude/skills/$(basename "$skill")
-done
-```
-
-**Project-level (current project only):**
 ```bash
 git clone https://github.com/ThepExcel/agent-skills.git
-
-# Symlink to project
-mkdir -p .claude/skills
-ln -s "$(pwd)/agent-skills/deep-research" .claude/skills/deep-research
-```
-
-### Method 3: Single Skill Only
-
-Clone, copy the skill you need, then delete the rest:
-
-**User-level:**
-```bash
-git clone https://github.com/ThepExcel/agent-skills.git
+mkdir -p ~/.claude/skills
 cp -r agent-skills/deep-research ~/.claude/skills/
 rm -rf agent-skills
 ```
 
-**Project-level:**
-```bash
-git clone https://github.com/ThepExcel/agent-skills.git
-mkdir -p .claude/skills
-cp -r agent-skills/deep-research .claude/skills/
-rm -rf agent-skills
-```
+Copy any skills you want. Use `~/.claude/skills/` for all projects, or `.claude/skills/` for current project only.
 
 ### Installation Scopes
 
