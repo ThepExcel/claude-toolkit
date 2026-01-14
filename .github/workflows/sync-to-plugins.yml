@@ -1,0 +1,186 @@
+name: Sync to claude-plugins
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout claude-skills (source)
+        uses: actions/checkout@v4
+        with:
+          path: skills
+
+      - name: Checkout claude-plugins (target)
+        uses: actions/checkout@v4
+        with:
+          repository: ThepExcel/claude-plugins
+          token: ${{ secrets.PLUGINS_REPO_TOKEN }}
+          path: plugins
+
+      - name: Transform flat to nested structure
+        run: |
+          cd plugins
+
+          # Clear existing plugins folder (but keep .git and root files)
+          rm -rf plugins/
+          mkdir -p plugins
+          mkdir -p .claude-plugin
+
+          # Process each skill folder
+          cd ../skills
+          for skill_dir in */; do
+            skill_name="${skill_dir%/}"
+
+            # Skip non-skill directories
+            if [[ "$skill_name" == ".git" ]] || [[ "$skill_name" == ".github" ]]; then
+              continue
+            fi
+
+            # Skip if no SKILL.md (not a valid skill)
+            if [[ ! -f "$skill_dir/SKILL.md" ]]; then
+              continue
+            fi
+
+            echo "Processing: $skill_name"
+
+            # Create nested plugin structure
+            target_dir="../plugins/plugins/$skill_name"
+            mkdir -p "$target_dir/.claude-plugin"
+            mkdir -p "$target_dir/skills/$skill_name"
+
+            # Copy plugin.json if exists, otherwise create one
+            if [[ -f "$skill_dir/.claude-plugin/plugin.json" ]]; then
+              cp "$skill_dir/.claude-plugin/plugin.json" "$target_dir/.claude-plugin/"
+            else
+              # Create basic plugin.json
+              cat > "$target_dir/.claude-plugin/plugin.json" << EOF
+          {
+            "name": "$skill_name",
+            "description": "Skill from ThepExcel/claude-skills",
+            "author": {
+              "name": "ThepExcel",
+              "email": "thepexcel@gmail.com"
+            }
+          }
+          EOF
+            fi
+
+            # Copy skill files to nested location
+            cp -r "$skill_dir"/* "$target_dir/skills/$skill_name/"
+            # Remove .claude-plugin from nested skill (already at plugin root)
+            rm -rf "$target_dir/skills/$skill_name/.claude-plugin"
+          done
+
+      - name: Generate marketplace.json
+        run: |
+          cd plugins
+
+          # Start marketplace.json
+          cat > .claude-plugin/marketplace.json << 'EOF'
+          {
+            "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+            "name": "claude-plugins",
+            "description": "Claude Code plugins - Auto-generated from ThepExcel/claude-skills",
+            "owner": {
+              "name": "ThepExcel",
+              "email": "thepexcel@gmail.com"
+            },
+            "plugins": [
+          EOF
+
+          # Add each plugin
+          first=true
+          for plugin_dir in plugins/*/; do
+            plugin_name="${plugin_dir%/}"
+            plugin_name="${plugin_name##*/}"
+
+            if [[ -f "plugins/$plugin_name/.claude-plugin/plugin.json" ]]; then
+              # Read description from plugin.json
+              desc=$(cat "plugins/$plugin_name/.claude-plugin/plugin.json" | grep -o '"description"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/"description"[[:space:]]*:[[:space:]]*"//' | sed 's/"$//' || echo "Skill from claude-skills")
+
+              if [ "$first" = true ]; then
+                first=false
+              else
+                echo "," >> .claude-plugin/marketplace.json
+              fi
+
+              cat >> .claude-plugin/marketplace.json << EOF
+              {
+                "name": "$plugin_name",
+                "description": "$desc",
+                "source": "./plugins/$plugin_name",
+                "category": "productivity"
+              }
+          EOF
+            fi
+          done
+
+          # Close marketplace.json
+          cat >> .claude-plugin/marketplace.json << 'EOF'
+            ]
+          }
+          EOF
+
+      - name: Create README
+        run: |
+          cat > plugins/README.md << 'EOF'
+          # Claude Plugins by ThepExcel
+
+          > **Auto-generated** from [ThepExcel/claude-skills](https://github.com/ThepExcel/claude-skills)
+          >
+          > Do NOT edit this repo directly. Edit the source repo instead.
+
+          ## Installation
+
+          ```bash
+          claude plugin install ThepExcel/claude-plugins
+          ```
+
+          ## Available Plugins
+
+          EOF
+
+          # List plugins
+          for plugin_dir in plugins/plugins/*/; do
+            plugin_name="${plugin_dir%/}"
+            plugin_name="${plugin_name##*/}"
+            echo "- \`$plugin_name\`" >> plugins/README.md
+          done
+
+          cat >> plugins/README.md << 'EOF'
+
+          ## Manual Installation
+
+          For manual installation (symlink), use the source repo instead:
+
+          ```bash
+          git clone https://github.com/ThepExcel/claude-skills
+          ln -s /path/to/claude-skills/skill-name ~/.claude/skills/skill-name
+          ```
+
+          ---
+
+          *Last synced: Auto-updated on push to claude-skills*
+          EOF
+
+      - name: Commit and push to claude-plugins
+        run: |
+          cd plugins
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add -A
+
+          # Check if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Sync from claude-skills
+
+          Auto-generated from ThepExcel/claude-skills
+          Source commit: ${{ github.sha }}"
+            git push
+          fi
