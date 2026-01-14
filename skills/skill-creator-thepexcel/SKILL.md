@@ -1,12 +1,12 @@
 ---
-name: skill-creator
+name: skill-creator-thepexcel
 description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.
-license: Complete terms in LICENSE.txt
+license: Apache 2.0 (see LICENSE.txt)
 ---
 
-# Skill Creator
+# Skill Creator (ThepExcel Edition)
 
-> **Enhanced by ThepExcel** — This version includes additional best practices from official Anthropic documentation plus practical insights from real-world skill development.
+> **Based on [Anthropic's official skill-creator](https://github.com/anthropics/skills)** — Licensed under Apache 2.0. Enhanced by ThepExcel with additional best practices and practical insights from real-world skill development.
 
 This skill provides comprehensive guidance for creating effective skills that Claude can discover and use successfully.
 
