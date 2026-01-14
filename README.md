@@ -1,18 +1,124 @@
-# Claude Toolkit
+# Claude Skills & Plugins Guide
 
-A comprehensive collection of skills, commands, and documentation for Claude Code.
+A comprehensive collection of skills for Claude Code, plus a complete reference for AI agents to understand Claude Code's architecture.
 
-**Repository:** `ThepExcel/claude-toolkit`
-**Marketplace name:** `claude-toolkit`
-**Author:** [ThepExcel](https://www.thepexcel.com)
+**Author:** [ThepExcel](https://www.thepexcel.com) • **License:** MIT
 
 ---
 
 ## Quick Install
 
 ```bash
-/plugin marketplace add ThepExcel/claude-toolkit
-/plugin install research-skills@claude-toolkit
+# Marketplace (recommended)
+claude plugin install ThepExcel/thepexcel-claude-plugins
+
+# Or add marketplace first
+/plugin marketplace add ThepExcel/thepexcel-claude-plugins
+/plugin install deep-research@thepexcel-claude-plugins
+```
+
+---
+
+## Installation Methods
+
+### Method 1: Plugin Marketplace (Recommended)
+
+Easiest way - works with `claude plugin install`:
+
+```bash
+claude plugin install ThepExcel/thepexcel-claude-plugins
+```
+
+This installs from the [thepexcel-claude-plugins](https://github.com/ThepExcel/thepexcel-claude-plugins) repo (auto-synced from this repo).
+
+### Method 2: Clone All Skills
+
+Clone this repo and symlink to make skills available:
+
+**User-level (all projects):**
+```bash
+git clone https://github.com/ThepExcel/claude-skills.git ~/claude-skills
+
+# Symlink individual skills
+ln -s ~/claude-skills/deep-research ~/.claude/skills/deep-research
+ln -s ~/claude-skills/triz ~/.claude/skills/triz
+# ... or symlink all
+for skill in ~/claude-skills/*/; do
+  ln -s "$skill" ~/.claude/skills/$(basename "$skill")
+done
+```
+
+**Project-level (current project only):**
+```bash
+git clone https://github.com/ThepExcel/claude-skills.git
+
+# Symlink to project
+mkdir -p .claude/skills
+ln -s "$(pwd)/claude-skills/deep-research" .claude/skills/deep-research
+```
+
+### Method 3: Single Skill (Sparse Checkout)
+
+Clone only the skill you need:
+
+```bash
+# Clone with sparse checkout
+git clone --filter=blob:none --sparse https://github.com/ThepExcel/claude-skills.git
+cd claude-skills
+git sparse-checkout set deep-research
+
+# Then symlink
+ln -s "$(pwd)/deep-research" ~/.claude/skills/deep-research
+```
+
+### Method 4: Direct Copy (No Git)
+
+Download and copy without maintaining git connection:
+
+```bash
+# Download specific skill
+curl -L https://github.com/ThepExcel/claude-skills/archive/main.tar.gz | tar xz
+cp -r claude-skills-main/deep-research ~/.claude/skills/
+
+# Cleanup
+rm -rf claude-skills-main
+```
+
+### Installation Scopes
+
+| Scope | Location | Availability |
+|-------|----------|--------------|
+| **User** | `~/.claude/skills/` | All your projects |
+| **Project** | `.claude/skills/` | Current project only |
+
+---
+
+## Available Skills
+
+| Skill | Description |
+|-------|-------------|
+| `deep-research` | 8-phase research with citations and source verification |
+| `triz` | TRIZ innovation methodology for technical problem-solving |
+| `explain-concepts` | Educational explanations with Feynman, Socratic methods |
+| `problem-solving` | Systematic problem analysis with Polya method |
+| `generate-creative-ideas` | Creative ideation with SCAMPER and more |
+| `design-business-model` | Business Model Canvas and Lean Canvas |
+| `manage-business-strategy` | Strategic analysis frameworks |
+| `power-query-coaching` | Power Query M code coaching |
+| `optimize-prompt` | AI prompt optimization for various platforms |
+| `prompt-ai-image-video` | Image/video generation prompts |
+| `extract-expertise` | Extract domain knowledge from experts |
+| `create-visualization` | Diagrams and Manim animations |
+| `skill-creator-thepexcel` | Create new Claude skills |
+
+### Document Skills (Not Included)
+
+The following official Anthropic skills are **source-available** (not open source) and cannot be redistributed:
+- `docx`, `xlsx`, `pptx`, `pdf`
+
+To use them, install from the official marketplace:
+```bash
+/plugin install document-skills@claude-plugins-official
 ```
 
 ---
@@ -1000,98 +1106,33 @@ Isolate bash commands with filesystem and network restrictions:
 
 ---
 
-## Available Skills in This Repository
+## Repository Structure
 
-| Skill | Description | License |
-|-------|-------------|---------|
-| `deep-research` | 8-phase research with citations and source verification | MIT |
-| `explain-concepts` | Educational explanations with examples | MIT |
-| `problem-solving` | Systematic problem analysis with Polya method | MIT |
-| `triz` | TRIZ innovation methodology | MIT |
-| `generate-creative-ideas` | Creative ideation with SCAMPER and more | MIT |
-| `design-business-model` | Business Model Canvas and Lean Canvas | MIT |
-| `manage-business-strategy` | Strategic analysis frameworks | MIT |
-| `power-query-coaching` | Power Query M code coaching | MIT |
-| `optimize-prompt` | AI prompt optimization | MIT |
-| `prompt-ai-image-video` | Image/video generation prompts | MIT |
-| `skill-creator-thepexcel` | Create new Claude skills | Apache 2.0 (based on [Anthropic](https://github.com/anthropics/skills)) |
-| `extract-expertise` | Extract domain knowledge from experts | MIT |
-| `create-visualization` | Diagrams and Manim animations | MIT |
+This repository (`claude-skills`) contains skills in a flat structure for easy cloning:
 
-### Document Skills (Not Included)
-
-The following official Anthropic skills are **source-available** (not open source) and cannot be redistributed:
-- `docx`, `xlsx`, `pptx`, `pdf`
-
-To use them, install from the official marketplace:
-```bash
-/plugin install document-skills@claude-plugins-official
 ```
+claude-skills/
+├── deep-research/
+│   ├── SKILL.md
+│   ├── SOURCES.md
+│   └── references/
+├── triz/
+├── ... (other skills)
+└── README.md
+```
+
+The companion repository [`thepexcel-claude-plugins`](https://github.com/ThepExcel/thepexcel-claude-plugins) contains the same skills in nested plugin format for `claude plugin install`. It is **auto-synced** from this repo via GitHub Actions.
 
 ---
 
-## Installation
+## Contributing
 
-### Claude Code (Recommended)
+1. Fork this repository
+2. Create a new skill folder with `SKILL.md`
+3. Add `SOURCES.md` for attribution
+4. Submit a pull request
 
-```bash
-# Add marketplace
-/plugin marketplace add ThepExcel/claude-toolkit
-
-# Install skill bundles
-/plugin install research-skills@claude-toolkit
-/plugin install innovation-skills@claude-toolkit
-/plugin install document-skills@claude-toolkit
-```
-
-### Manual Installation
-
-#### Option 1: Install All Skills
-
-```bash
-# Clone the repository
-git clone https://github.com/ThepExcel/claude-toolkit.git
-
-# Copy to user scope (available in all projects)
-mkdir -p ~/.claude/skills
-cp -r claude-toolkit/skills/* ~/.claude/skills/
-
-# Or copy to project scope (current project only)
-mkdir -p .claude/skills
-cp -r claude-toolkit/skills/* .claude/skills/
-
-# Clean up
-rm -rf claude-toolkit
-```
-
-#### Option 2: Install Specific Skills Only
-
-```bash
-# Clone the repository
-git clone https://github.com/ThepExcel/claude-toolkit.git
-
-# Copy specific skill to user scope
-mkdir -p ~/.claude/skills
-cp -r claude-toolkit/skills/deep-research ~/.claude/skills/
-
-# Or copy to project scope
-mkdir -p .claude/skills
-cp -r claude-toolkit/skills/deep-research .claude/skills/
-
-# Clean up
-rm -rf claude-toolkit
-```
-
-| Scope | Location | Availability |
-|-------|----------|--------------|
-| User | `~/.claude/skills/` | All projects |
-| Project | `.claude/skills/` | Current project only |
-
-### Claude.ai
-
-1. Download skill folder from `skills/`
-2. ZIP the folder
-3. Settings > Capabilities > Skills > Upload
+See the [skill-creator-thepexcel](./skill-creator-thepexcel/) skill for guidance on creating effective skills.
 
 ---
 
@@ -1099,8 +1140,6 @@ rm -rf claude-toolkit
 
 - **ThepExcel original skills:** MIT License
 - **skill-creator-thepexcel:** Apache 2.0 (based on [Anthropic's skill-creator](https://github.com/anthropics/skills))
-
-> **Note:** Document skills (docx, xlsx, pptx, pdf) are NOT included in this repository due to their restrictive license. Install them from the official marketplace: `/plugin install document-skills@claude-plugins-official`
 
 ---
 

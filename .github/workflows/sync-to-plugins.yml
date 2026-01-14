@@ -17,7 +17,7 @@ jobs:
       - name: Checkout claude-plugins (target)
         uses: actions/checkout@v4
         with:
-          repository: ThepExcel/claude-plugins
+          repository: ThepExcel/thepexcel-claude-plugins
           token: ${{ secrets.PLUGINS_REPO_TOKEN }}
           path: plugins
 
@@ -83,8 +83,8 @@ jobs:
           cat > .claude-plugin/marketplace.json << 'EOF'
           {
             "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-            "name": "claude-plugins",
-            "description": "Claude Code plugins - Auto-generated from ThepExcel/claude-skills",
+            "name": "thepexcel-claude-plugins",
+            "description": "Claude Code plugins by ThepExcel - Auto-generated from ThepExcel/claude-skills",
             "owner": {
               "name": "ThepExcel",
               "email": "thepexcel@gmail.com"
@@ -125,47 +125,10 @@ jobs:
           }
           EOF
 
-      - name: Create README
+      - name: Copy README from source
         run: |
-          cat > plugins/README.md << 'EOF'
-          # Claude Plugins by ThepExcel
-
-          > **Auto-generated** from [ThepExcel/claude-skills](https://github.com/ThepExcel/claude-skills)
-          >
-          > Do NOT edit this repo directly. Edit the source repo instead.
-
-          ## Installation
-
-          ```bash
-          claude plugin install ThepExcel/claude-plugins
-          ```
-
-          ## Available Plugins
-
-          EOF
-
-          # List plugins
-          for plugin_dir in plugins/plugins/*/; do
-            plugin_name="${plugin_dir%/}"
-            plugin_name="${plugin_name##*/}"
-            echo "- \`$plugin_name\`" >> plugins/README.md
-          done
-
-          cat >> plugins/README.md << 'EOF'
-
-          ## Manual Installation
-
-          For manual installation (symlink), use the source repo instead:
-
-          ```bash
-          git clone https://github.com/ThepExcel/claude-skills
-          ln -s /path/to/claude-skills/skill-name ~/.claude/skills/skill-name
-          ```
-
-          ---
-
-          *Last synced: Auto-updated on push to claude-skills*
-          EOF
+          # Copy README from claude-skills (source of truth)
+          cp skills/README.md plugins/README.md
 
       - name: Commit and push to claude-plugins
         run: |
