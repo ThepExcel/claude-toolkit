@@ -6,19 +6,6 @@ A comprehensive collection of skills for Claude Code, plus a complete reference 
 
 ---
 
-## Quick Install
-
-```bash
-# Marketplace (recommended)
-claude plugin install ThepExcel/thepexcel-claude-plugins
-
-# Or add marketplace first
-/plugin marketplace add ThepExcel/thepexcel-claude-plugins
-/plugin install deep-research@thepexcel-claude-plugins
-```
-
----
-
 ## Installation Methods
 
 ### Method 1: Plugin Marketplace (Recommended)
