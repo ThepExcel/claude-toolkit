@@ -90,16 +90,6 @@ rm -rf claude-skills
 | `create-visualization` | Diagrams and Manim animations |
 | `skill-creator-thepexcel` | Create new Claude skills |
 
-### Document Skills (Not Included)
-
-The following official Anthropic skills are **source-available** (not open source) and cannot be redistributed:
-- `docx`, `xlsx`, `pptx`, `pdf`
-
-To use them, install from the official marketplace:
-```bash
-/plugin install document-skills@claude-plugins-official
-```
-
 ---
 
 ## For AI Agents: Claude Code Complete Reference
