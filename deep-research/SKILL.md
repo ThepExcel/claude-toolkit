@@ -94,6 +94,28 @@ If WebFetch returns 403:
 curl -s --max-time 60 "https://r.jina.ai/https://example.com"
 ```
 
+## GitHub Repository Research
+
+When research reveals **interesting GitHub repositories** that could provide deeper insights:
+
+1. **ASK user before cloning:**
+   ```
+   "เจอ repo ที่น่าสนใจ: [repo-name] — ต้องการให้ clone มาศึกษา code โดยละเอียดไหมคะ?"
+   ```
+
+2. **If user agrees, clone to study folder:**
+   ```bash
+   cd /mnt/d && git clone [repo-url] [repo-name]-study
+   ```
+
+3. **Key files to read:**
+   - `package.json` / `pyproject.toml` — dependencies, entry points
+   - `src/index.ts` or `src/main.py` — main logic
+   - `src/types/` — data structures
+   - `README.md` — overview
+
+**Why:** Cloned repos allow deeper code analysis than WebFetch summaries.
+
 ## Finding Details in References
 
 | Topic | File | Grep Pattern |
