@@ -38,14 +38,21 @@ ABSTRACT → MAP (3-5 domains) → SEARCH → GENERALIZE → SYNTHESIZE
 ```
 **Trigger:** "creative mode", "cross-industry", "what do others do"
 
+**Example:** "ทำยังไงให้คนมา engage กับ online course มากขึ้น?"
+→ ABSTRACT: "retention + engagement ในกิจกรรมที่ทำซ้ำ"
+→ MAP: Gaming (streaks, XP), Fitness apps (habit loops), YouTube (thumbnails, hooks), Loyalty programs (tiers)
+→ SEARCH each domain → GENERALIZE patterns → SYNTHESIZE recommendations
+
+---
+
 ## Classification
 
-| Type | When | Process |
-|------|------|---------|
-| A | Single fact | WebSearch → Answer |
-| B | Multi-fact | 3 phases |
-| C | Judgment needed | 6 phases |
-| D | Novel/conflicting | Full + Red Team |
+| Type | When | Process | Example |
+|------|------|---------|---------|
+| **A** | Single fact | WebSearch → Answer | "Python 3.13 release date คือเมื่อไหร่?" |
+| **B** | Multi-fact | Scan → Retrieve → Synthesize | "เปรียบเทียบ pricing ของ cloud GPU providers" |
+| **C** | Judgment needed | Full 6 phases | "ควรใช้ Next.js หรือ Astro สำหรับ blog?" |
+| **D** | Novel/conflicting | Full + Red Team | "AI จะแทนที่ data analyst ภายใน 3 ปีจริงไหม?" |
 
 ## Intensity Tiers
 
@@ -56,29 +63,31 @@ ABSTRACT → MAP (3-5 domains) → SEARCH → GENERALIZE → SYNTHESIZE
 | Deep | 20-30 | Novel, high stakes |
 | Exhaustive | 30+ | Critical decision |
 
-## Core Rules
+---
+
+## Search & Evidence
 
 ### Parallel Search (MANDATORY)
 ```
-[Single message]
-WebSearch: "[topic] 2025"
+[Single message — always 2-3 queries at once]
+WebSearch: "[topic] [current year]"
 WebSearch: "[topic] limitations"
 WebSearch: "[topic] vs alternatives"
 ```
 
 ### Claim Types
 
-| Type | Requirements |
-|------|--------------|
-| **C1** | Quote + 2+ sources + confidence + reasoning |
-| **C2** | Citation required |
-| **C3** | Cite if contested |
+| Type | Requirements | Example |
+|------|--------------|---------|
+| **C1** (Key claim) | Quote + 2+ sources + confidence | "Next.js มี market share 42%" |
+| **C2** (Supporting) | Citation required | "Vercel เป็นผู้พัฒนา Next.js" |
+| **C3** (Common knowledge) | Cite if contested | "React เป็น library ยอดนิยม" |
 
 ### Confidence Format (C1 claims)
 ```
 **Claim:** [Statement]
 **Confidence:** HIGH/MEDIUM/LOW
-**Reason:** [Why]
+**Reason:** [Why this confidence level]
 **Sources:** [1][2]
 ```
 
@@ -87,36 +96,79 @@ WebSearch: "[topic] vs alternatives"
 - Use "According to [1]..."
 - Admit: "No sources found for X"
 
-## URL Fallback
+---
+
+## Research Sufficiency
+
+**"เมื่อไหร่ถึงจะพอ?"**
+
+| Signal | หมายความว่า |
+|--------|-----------|
+| **Saturation** | 3 sources ต่อเนื่องไม่ให้ข้อมูลใหม่ → พอแล้ว |
+| **Convergence** | หลาย sources สรุปเหมือนกัน → confidence สูง |
+| **Contradiction** | Sources ขัดแย้งกัน → ต้อง dig deeper หรือ flag uncertainty |
+| **Diminishing returns** | เพิ่ม search แต่ได้แค่ rephrase ของเดิม → หยุดได้ |
+
+**Quick tier:** หยุดเมื่อ saturation
+**Standard:** หยุดเมื่อ convergence + gap analysis ไม่เจอ gap สำคัญ
+**Deep/Exhaustive:** หยุดเมื่อ Red Team challenge ไม่พบจุดอ่อนใหม่
+
+---
+
+## Facilitation Guide
+
+### Progress Reporting
+
+```
+ทุกๆ 5-8 sources → update ผู้ใช้:
+"สรุปที่พบจนถึงตอนนี้: [key findings]
+ยังมีคำถามค้าง: [gaps]
+จะ search ต่อเรื่อง [next direction] นะคะ"
+```
+
+### When to Ask User
+
+| สถานการณ์ | ถามว่า |
+|-----------|-------|
+| Topic กว้างเกินไป | "อยากเน้นมุมไหนคะ? [option A] หรือ [option B]?" |
+| เจอ sub-topic น่าสนใจ | "เจอเรื่อง X ที่เกี่ยวข้อง — อยากให้ขุดลึกไหมคะ?" |
+| Sources ขัดแย้ง | "แหล่ง A บอกว่า X แต่แหล่ง B บอกว่า Y — พี่ระ lean ทางไหนคะ?" |
+| Deep+ tier, plan ready | "นี่คือ plan สำหรับ research — approve ก่อนไปต่อนะคะ" |
+
+### Don't Ask — Just Do
+
+- Type A questions → ตอบเลย
+- Choosing search queries → ทำเลย ไม่ต้องถาม
+- Formatting output → ใช้ template ได้เลย
+
+---
+
+## Tools & Fallbacks
+
+### URL Fallback
 
 If WebFetch returns 403:
 ```bash
 curl -s --max-time 60 "https://r.jina.ai/https://example.com"
 ```
 
-## GitHub Repository Research
+### GitHub Repository Research
 
-When research reveals **interesting GitHub repositories** that could provide deeper insights:
+เจอ repo น่าสนใจ → **ถาม user ก่อน clone:**
+```
+"เจอ repo ที่น่าสนใจ: [repo-name] — ต้องการให้ clone มาศึกษา code ไหมคะ?"
+```
 
-1. **ASK user before cloning:**
-   ```
-   "เจอ repo ที่น่าสนใจ: [repo-name] — ต้องการให้ clone มาศึกษา code โดยละเอียดไหมคะ?"
-   ```
+If agreed:
+```bash
+mkdir -p /mnt/d/githubresearch && cd /mnt/d/githubresearch && git clone [repo-url]
+```
 
-2. **If user agrees, clone to dedicated research folder:**
-   ```bash
-   mkdir -p /mnt/d/githubresearch && cd /mnt/d/githubresearch && git clone [repo-url]
-   ```
+Key files: `package.json`/`pyproject.toml` → `src/` main logic → `README.md`
 
-3. **Key files to read:**
-   - `package.json` / `pyproject.toml` — dependencies, entry points
-   - `src/index.ts` or `src/main.py` — main logic
-   - `src/types/` — data structures
-   - `README.md` — overview
+---
 
-**Why:** Cloned repos allow deeper code analysis than WebFetch summaries.
-
-## Finding Details in References
+## References
 
 | Topic | File | Grep Pattern |
 |-------|------|--------------|
@@ -128,8 +180,6 @@ When research reveals **interesting GitHub repositories** that could provide dee
 | **Query generation** | [query-framework.md](./references/query-framework.md) | QUEST Matrix |
 | **Perspective audit** | [perspective-checklist.md](./references/perspective-checklist.md) | COMPASS Checklist |
 | **Researcher thinking** | [researcher-thinking.md](./references/researcher-thinking.md) | THINK Protocol |
-
-## Scripts
 
 | Script | Purpose |
 |--------|---------|
@@ -147,6 +197,8 @@ research/[topic-slug]-[YYYY-MM-DD].md
 
 - Create `research/` folder if it doesn't exist
 - **Why:** Research takes effort. Save it for future reference.
+
+---
 
 ## Related Skills
 
