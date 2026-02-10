@@ -3,6 +3,7 @@
 ## Contents
 - [Phase 0: CLASSIFY](#phase-0-classify)
 - [Phase 0.5: DISCOVERY](#phase-05-discovery)
+- [Phase 0.7: RECENCY PULSE](#phase-07-recency-pulse)
 - [Phase 1: SCOPE](#phase-1-scope)
 - [Phase 1.5: HYPOTHESIZE](#phase-15-hypothesize)
 - [Phase 2: PLAN](#phase-2-plan)
@@ -120,7 +121,105 @@ Confirmed: DeepSeek, Qwen, Yi, Baichuan, GLM
 | Search for specific comparisons first | Map the territory before drilling down |
 | Ignore unfamiliar names in results | Extract and list every entity |
 
-**Gate**: Complete entity list extracted; landscape mapped before SCOPE.
+**Gate**: Complete entity list extracted; landscape mapped before RECENCY PULSE.
+
+---
+
+## Phase 0.7: RECENCY PULSE
+
+**Objective:** Catch breaking news and recent releases that LANDSCAPE SCAN may miss due to broad yearly queries.
+
+**Rationale:** LANDSCAPE SCAN uses "[current year]" which can return 12 months of results. For fast-changing fields (AI, tech, crypto), critical releases can happen within days. A model released last week may not rank highly in year-wide searches. Additionally, searching only the downstream product (e.g., "Microsoft Copilot") misses upstream provider updates (e.g., new OpenAI/Anthropic models).
+
+### When to Apply
+
+**ALL research types** where topic involves technology, AI, or fast-changing domains.
+
+| Tier | Recency Queries |
+|------|----------------|
+| Quick | 1-2 recency searches |
+| Standard | 2-3 recency + 1-2 upstream |
+| Deep | 3-4 recency + 2-3 upstream |
+| Exhaustive | 4+ recency + all upstream providers |
+
+### Process
+
+1. **Recency Search** (parallel, use CURRENT MONTH + YEAR):
+   ```
+   WebSearch: "[topic] latest news [current month] [current year]"
+   WebSearch: "[topic] new release announcement this week [current year]"
+   WebSearch: "[topic] updates what's new [current month] [current year]"
+   ```
+
+2. **Upstream Provider Search** (identify supply chain FIRST):
+   ```
+   Ask: "Who MAKES the underlying technology for [topic]?"
+
+   For each upstream provider:
+   WebSearch: "[provider] latest release [current month] [current year]"
+   WebSearch: "[provider] new model announcement [current year]"
+   ```
+
+   **Example — researching "Microsoft Copilot":**
+   ```
+   Upstream providers: OpenAI (GPT models), Anthropic (Claude models)
+   → WebSearch: "OpenAI latest model release February 2026"
+   → WebSearch: "Anthropic latest release February 2026"
+   → WebSearch: "Microsoft Copilot new features February 2026"
+   ```
+
+3. **Flag Recent Discoveries:**
+   ```markdown
+   **RECENT (last 30 days):**
+   - [Entity]: Released [date] — [brief description]
+   - [Entity]: Announced [date] — [impact on topic]
+
+   **BREAKING (last 7 days):**
+   - [Entity]: Released [date] — ⚠️ May not appear in broad searches yet
+   ```
+
+4. **Merge with Landscape Scan:**
+   - Add recent entities to the master entity list
+   - Flag items that are too new to have broad coverage
+   - Note which existing entities have been UPDATED/SUPERSEDED
+
+### Supply Chain Mapping Template
+
+```markdown
+## Supply Chain for [TOPIC]
+
+**Upstream (Technology Creators):**
+- [Provider 1]: Creates [what] → Search: "[Provider 1] latest [month] [year]"
+- [Provider 2]: Creates [what] → Search: "[Provider 2] latest [month] [year]"
+
+**Midstream (Platform/Integrators):**
+- [Platform 1]: Integrates [what from whom]
+- [Platform 2]: Integrates [what from whom]
+
+**Downstream (End Products):**
+- [Product 1]: Uses [what]
+- [Product 2]: Uses [what]
+
+**Competitors:**
+- [Competitor 1]: Alternative to [what]
+```
+
+### Anti-Patterns
+
+| Wrong | Right |
+|-------|-------|
+| Search only "[topic] 2026" (year-wide) | Add "[topic] February 2026" (month-specific) |
+| Search only downstream product | Search upstream providers + downstream |
+| Assume landscape scan caught everything recent | Dedicated recency queries with month/week |
+| Skip upstream when researching a product ecosystem | Map supply chain → search each provider |
+
+**Real Example of Failure:**
+- Researched "Microsoft Copilot" in Feb 2026
+- Landscape scan found GPT-5.2, Claude Opus 4.1 (old data)
+- Missed: GPT-5.3-Codex + Claude Opus 4.6 (both released 5 Feb 2026)
+- Fix: Upstream search "OpenAI latest February 2026" + "Anthropic latest February 2026" → would have caught both
+
+**Gate**: Recency check completed; recent/breaking items flagged; upstream providers searched.
 
 ---
 
@@ -475,6 +574,8 @@ Before delivery:
 - [ ] C1 claims have 2+ independent sources
 - [ ] Contradictions acknowledged
 - [ ] Sources recent (<3 months for AI/tech)
+- [ ] **Recency Pulse completed** (checked last 7-30 days)
+- [ ] **Upstream providers searched** (not just downstream product)
 - [ ] No unsupported claims
 - [ ] Implications for each finding
 - [ ] Red Team section included

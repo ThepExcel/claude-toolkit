@@ -11,7 +11,7 @@ Enhanced research engine for topics where training data is outdated.
 
 ### Standard Mode
 ```
-CLASSIFY → LANDSCAPE SCAN → SCOPE → HYPOTHESIZE → PLAN → [PLAN PREVIEW*] → RETRIEVE
+CLASSIFY → LANDSCAPE SCAN → RECENCY PULSE → SCOPE → HYPOTHESIZE → PLAN → [PLAN PREVIEW*] → RETRIEVE
 → GAP ANALYSIS → TRIANGULATE → SYNTHESIZE → RED TEAM → SELF-CRITIQUE → PACKAGE
 ```
 *Deep+ tier only
@@ -28,9 +28,46 @@ WebSearch: "[topic] ecosystem players [current year]"
 
 → Extract ALL entity names from results
 → List: Discovered (new to you) vs Confirmed (you knew)
-→ THEN proceed to SCOPE with complete picture
+→ THEN proceed to RECENCY PULSE
 ```
 **Why:** You cannot research what you don't know exists. Scan the landscape FIRST.
+
+### RECENCY PULSE (MANDATORY - After Landscape Scan)
+```
+[Search for LATEST news — within days/weeks, not just "this year"]
+WebSearch: "[topic] latest news this week [current month] [current year]"
+WebSearch: "[topic] new release announcement [current month] [current year]"
+WebSearch: "[upstream provider 1] latest release [current year]"
+WebSearch: "[upstream provider 2] latest release [current year]"
+
+→ Check: anything released in the last 7-30 days?
+→ If yes: add to entity list, flag as BREAKING/RECENT
+→ THEN proceed to SCOPE with complete picture
+```
+
+**UPSTREAM CHECK (part of Recency Pulse):**
+```
+For any product/platform research, identify the SUPPLY CHAIN:
+- Who MAKES the underlying technology? (e.g., OpenAI → GPT, Anthropic → Claude)
+- Who DISTRIBUTES it? (e.g., Microsoft → Copilot, GitHub → Copilot)
+- Who COMPETES with it? (e.g., Google → Gemini)
+
+Search EACH upstream provider directly — don't rely on downstream announcements.
+
+Example for "Microsoft Copilot":
+  Upstream: OpenAI (GPT models), Anthropic (Claude models)
+  Downstream: Microsoft (Copilot products)
+  → Search "OpenAI latest model [month] [year]"
+  → Search "Anthropic latest release [month] [year]"
+  → Search "Microsoft Copilot new features [month] [year]"
+```
+
+**Why:** Downstream products lag behind upstream releases. A new model from
+OpenAI/Anthropic may not appear in "Microsoft Copilot updates" for weeks.
+If you only search downstream, you miss what's coming or just arrived.
+
+**Anti-pattern:** ค้นแค่ "Microsoft Copilot new features 2026" แล้วหยุด
+**Better:** ค้น upstream (OpenAI, Anthropic) + downstream (Microsoft) + "this week/month"
 
 ### Creative Mode
 ```
