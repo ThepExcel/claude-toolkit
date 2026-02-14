@@ -160,8 +160,21 @@ Create professional-quality AI visuals with an artist's eye.
 | ยืน/นั่ง/ท่าตั้ง | Portrait | 768x1344 |
 | นอน/คลาน/แนวนอน | Landscape | 1344x768 |
 
-### มุมกล้อง ↔ Face Description
-ถ่ายจากหลัง → **ห้ามใส่ face description** (model สับสน)
+### มุมกล้อง ↔ Face Description (Pose-Face Matching)
+
+> **กฎ:** เห็นอะไรก็เน้นสิ่งนั้น ไม่เห็นอะไรก็ไม่ต้องพูดถึง — ไม่งั้นรูปพัง
+
+| มุมกล้อง / Pose | เน้น | ห้ามใส่ |
+|----------------|------|--------|
+| ถ่ายจากหลัง | body line, hair, back, outfit from behind | face description ทุกชนิด |
+| ก้ม / ไม่เห็นหน้าชัด | body shape, posture, legs, action | face details, eye contact |
+| Close-up หน้า | face details เต็มที่ | full body, shoes |
+| เห็นตัว ไม่เห็นหน้า | outfit, body line, pose action | face description ละเอียด |
+| Side profile | jawline, profile silhouette | frontal face details (dimples, both eyes) |
+
+**Check:** "มุมนี้เห็นหน้าไหม?" → ไม่เห็น → ตัด face ออก / "prompt มี contradiction ไหม?" (เช่น ก้มหน้า + มองกล้อง)
+
+📖 รายละเอียด + ตัวอย่าง: ดู `styles/prompt-lessons.md` → Lesson 2
 
 ### Close-up Level ↔ Costume
 - Extreme close-up → เห็นหน้า แต่ชุด/ปีก/อาวุธ หาย
